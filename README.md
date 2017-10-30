@@ -6,7 +6,7 @@ Within the last few months, there has been an influx of bikesharing companies th
 Capital Bikeshare provides all of their rider data on their [website](https://www.capitalbikeshare.com/system-data), which includes the start time, start station, end time, end station, and member type (casual and registered). There are 4 datasets for each quarter of the year (Q2 from 2011, Q3 from 2011, Q4 from 2011, and Q1 from 2012). In addition to the bikeshare data, the [University of California Irvine](http://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset) has a dataset that has weather data for 2011 and 2012 for bikeshare rides. This dataset contains information about the weather like temperature and humidity as well as information regarding holidays and workdays. The last dataset used in this initial report is the latitude and longitude data for each of the bikeshare stations from [Open Data DC](http://opendata.dc.gov/datasets/capital-bike-share-locations).
 <br>
 <br>
-An additional dataset that could be useful for this analysis is traffic data. This could be another piece of information that could help determine how long a ride might take.
+Traffic data could be another dataset that could provide additional insights as to what increases or decreases the ride times of Capital Bikeshare bikes. Building a dataset using more recent bikeshare and weather could be useful in seeing if the analysis presented in this document holds true in later years.
 
 ## Cleaning Data
 The quarterly data and UCI weather dataset contain date columns that needed to be loaded in as datetime objects to make it easier for filtering and merging of the datasets. To handle the date columns, the partse_dates attributes were used on in the read_csv functions. This created all date columns as datetime objects in Python. There were not dates included in the latitude and longitude dataset.
@@ -15,8 +15,7 @@ The quarterly data and UCI weather dataset contain date columns that needed to b
 When inspecting the first few rows of each dataframe, each datasets have columns that are not necessary for the analysis and prediction aspects of the project. The UCI weather dataset contains extra columns like month, year, and instant (an index column). The bikeshare dataset contains additional columns like duration (text field) and bike serial number. The latitude and longitude dataset contained extra columns about the different bikeshare docking stations outside of the latitudes and longitudes. All of these columns were removed as they would not impact the analysis to be performed. In addition to removing columns, some columns had to be renamed so all columns match, which is needed for the the joining of the datasets. 
 <br>
 <br>
-
-There were not many missing values in each dataset. The bikeshare data contained 11 rows that did not have a final end point. These rows were removed from the bikeshare dataset. The UCI and lat/lon data did not have any null or missing values. 
+Each dataset did not have many missing values.. The bikeshare data contained 11 rows that did not have a final end point. These rows were removed from the bikeshare dataset. The UCI and lat/lon data did not have any null or missing values. 
 <br>
 <br>
 One of the Bikeshare datasets contained negative values for the time difference column. After doing some research, this occurred because of daylight savings time. 60 minutes were added to the negative values to make adjust for the 1 hour difference. 
