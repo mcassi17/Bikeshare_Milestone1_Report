@@ -21,22 +21,19 @@ When inspecting the first few rows of each dataframe, each datasets have columns
 Each dataset did not have many missing values. The bikeshare data contained 11 rows that did not have a final end point. These rows were removed from the bikeshare dataset. The UCI and lat/lon data did not have any null or missing values. 
 <br>
 <br>
-One of the Bikeshare datasets contained negative values for the time difference column. After doing some research, this occurred because of daylight savings time. 60 minutes were added to the negative values to make adjust for the 1 hour difference. 
-<br>
-<br>
-Prior to joining the datasets together, the date columns from all datasets needed to be in the same format. The UCI weather dataset date format is YYYY-MM-DD, while the Bikeshare datasets used a YYYY-MM-DD HH:MM:SS format. Two additional columns were created in the Bikeshare datasets with the YYYY-MM-DD format. The original columns with the hours, minutes, and seconds were kept. In addition to creating those two columns, another column was created for the time difference, in minutes, between the start and end times of the bikeshare dataset.
+Prior to joining the datasets together, the date columns from all datasets needed to be in the same format. The UCI weather dataset date format is YYYY-MM-DD, while the Bikeshare datasets used a YYYY-MM-DD HH:MM:SS format. Two additional columns were created in the Bikeshare datasets with the YYYY-MM-DD format. The original columns with the hours, minutes, and seconds were kept. In addition to creating those two columns, another columns was created for the time difference, in minutes, based on parsing the duration column (string like '0h 12min. 33sec.'). After calculating the ride time, there were values of 0, which accounted for 42 rows. These rows were removed.
 <br>
 <br>
 The notebooks used to clean up the quarterly data are named [Bikeshare_cleaning_2012_Q1.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Bikeshare_cleaning_2012_Q1.ipynb), [Bikeshare_cleaning_Q2.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Bikeshare_cleaning_Q2.ipynb), [Bikeshare_cleaning_Q3.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Bikeshare_cleaning_Q3.ipynb), and [Bikeshare_cleaning_Q4.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Bikeshare_cleaning_Q4.ipynb). The cleaning of the latitude and longitude data is found in the file named [Add_Lat_Lon.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Add_Lat_Lon.ipynb).
 
 ### Joining Datasets
-Each quarterly dataset was joined with the UCI data using the start date in the bikeshare datasets and the date column from the UCI data. Once this was done, the 4 datasets were concatenated to create the full dataset of rides and UCI weather data. 
+Each quarterly dataset was joined with the UCI data using the start date in the bikeshare datasets and the date column from the UCI data. Once this was done, the 5 datasets were concatenated to create the full dataset of rides and UCI weather data. 
 <br>
 <br>
 The next two joins were used to combine the latitudes and longitudes of all of the start and end stations for each ride. The first join was to combine the start station latitudes and longitudes with the full dataset. Once this was completed, the end station latitudes and longitudes were combined with the dataset. The joining of the data can be found in the files named [Combine_Quarters.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Combine_Quarters.ipynb), [Data_Wrangling_Report.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Data_Wrangling_Report.ipynb), and [Add_Lat_Lon.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Add_Lat_Lon.ipynb).
 
 ### Additional Data Cleaning
-Once the datasets were all combined, there were some rows that did not have latitudes and longitudes, meaning these stations existed in 2011 and 2012 but no longer exist in 2017. These rows were removed from the dataset.
+Once the datasets were all combined, there were some rows that did not have latitudes and longitudes, meaning these stations existed in 2011 and 2012 but no longer exist in 2017. These rows were removed from the dataset (144k rows).
 <br>
 <br>
 An additional column was created in the dataset, miles between the start and end station, using the latitudes and longitudes of the stations. The formula used to calculate this was the Vincenty distance from the geopy package in Python. This additional column creation and cleaning can be found in the file named Add_Lat_Lon.ipynb. The full report about the data wrangling effort can be found in the file named [Data_Wrangling_Report.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Data_Wrangling_Report.ipynb).
@@ -51,10 +48,29 @@ Through the graphical analysis, there were differences in ride times based on se
 The member type (casual and registered riders) provided the largest difference in ride times. When the graphical analysis with the season, workday, weather category, and holiday variables was combined with the member type, the difference in ride times were similar to the difference in ride times for just the two different member types. The correlations were relatively the same for the humidity, temperature, and wind speed when the member type was factored in. The exploratory analysis can be found in the files named [Data_Investigation.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Data_Investigation.ipynb) and [Data_Investigation_Report.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Data_Investigation_Report.ipynb).
 
 ### Statistical Findings
-Through the use of confidence intervals and hypothesis testing, the observations from the graphical analysis were tested to determine if the differences in ride times happened through chance or if there actually was a difference in ride times. From this analysis, it was found that there were differences in ride times for the different seasons and there were differences within each season when member type was factored. The same conclusions were made for holiday/non-holidays, workdays/non-workdays, and the different weather categories. 
+Through the use of confidence intervals and hypothesis testing, the observations from the graphical analysis were tested to determine if the differences in ride times happened through chance or if there actually was a difference in ride times. The tests used were the Student's t test and Analysis of Variance with a significance of 0.05 for all tests. For the t-tests done after ANOVA tests, the significance was reduced by dividing 0.05 by the number of additional tests. 
 <br>
 <br>
-These tests also proved that there were correlations between wind speed, humidity, temperatures, and miles between the start and end stations. However, the correlation values for humidity, temperature, and wind speed were very low (close to 0), meaning that the correlation was not very large. The correlation was fairly large for ride time and miles between stations. When the member type was factored in, the correlation between ride time and miles for registered riders was even larger. The correlation was relatively low when factoring in casual riders. The statistical inference notebook can be found in the file named [Bikeshare_Statistical_Inference.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Bikeshare_Statistical_Inference.ipynb).
+The ride times for the different rider types (Casual vs. Registered riders) was statistically significant (p-value ~= 0.0) and the difference was 14.13 minutes. From this analysis, it was also found that there were differences in ride times for the different seasons and there were differences within each season when member type was factored. The same conclusions were made for holiday/non-holidays, workdays/non-workdays, and the different weather categories. 
+<br>
+<br>
+| Categories       | Difference in Ride Times |
+| ------------- |:-------------:|
+| Workday/Non-Workday     | 3.18 minutes |
+| Workday Casual vs. Registered     | 12.62 minutes     |
+| Non-Workday Casual vs. Registered | 15.47 minutes      |
+| Holiday/Non-Holiday | 1.1 minutes   |
+| Holiday Casual vs. Registered | 14.15 minutes      |
+| Sunny Casual vs. Registered | 14.21 minutes      |
+| Cloudy/Misty Casual vs. Registered | 14.02 minutes      |
+| Rainy/Stormy/Snowy Casual vs. Registered | 8.74 minutes     |
+| Spring Casual vs. Registered | 14.92 minutes      |
+| Summer Casual vs. Registered | 14.47 minutes      |
+| Fall Casual vs. Registered | 13.0 minutes      |
+| Winter Casual vs. Registered | 13.68 minutes      |
+<br>
+<br>
+These tests also proved that there were correlations between wind speed, humidity, temperatures, and miles between the start and end stations. However, the correlation values for humidity (0.006), temperature (0.10), and wind speed (-0.02) were very low (close to 0), meaning that the correlation was not very large. The correlation was fairly large for ride time and miles between stations at 0.40. When the member type was factored in, the correlation between ride time and miles for registered riders was even larger (0.65). The correlation was relatively low when factoring in casual riders (0.14). The statistical inference notebook can be found in the file named [Bikeshare_Statistical_Inference.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Bikeshare_Statistical_Inference.ipynb).
 
 ### Conclusions
 This analysis provided key insights as to which factors lead to increased or decreased ride times. The rider type seems to play a large role in the ride times. Season, weather, holidays, and workdays also play a role in how long a ride might take. When the rider type is factored into those four variables, the differences in ride times is very similar to the actual differences in ride times only between the rider type. These variables will more than likely be included the models that will be used to determine ride times. 
