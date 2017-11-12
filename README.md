@@ -54,20 +54,21 @@ Through the use of confidence intervals and hypothesis testing, the observations
 The ride times for the different rider types (Casual vs. Registered riders) was statistically significant (p-value ~= 0.0) and the difference was 14.13 minutes. From this analysis, it was also found that there were differences in ride times for the different seasons and there were differences within each season when member type was factored. The same conclusions were made for holiday/non-holidays, workdays/non-workdays, and the different weather categories. 
 <br>
 <br>
-| Categories       | Difference in Ride Times |
-| ------------- |:-------------:|
-| Workday/Non-Workday     | 3.18 minutes |
-| Workday Casual vs. Registered     | 12.62 minutes     |
-| Non-Workday Casual vs. Registered | 15.47 minutes      |
-| Holiday/Non-Holiday | 1.1 minutes   |
-| Holiday Casual vs. Registered | 14.15 minutes      |
-| Sunny Casual vs. Registered | 14.21 minutes      |
-| Cloudy/Misty Casual vs. Registered | 14.02 minutes      |
-| Rainy/Stormy/Snowy Casual vs. Registered | 8.74 minutes     |
-| Spring Casual vs. Registered | 14.92 minutes      |
-| Summer Casual vs. Registered | 14.47 minutes      |
-| Fall Casual vs. Registered | 13.0 minutes      |
-| Winter Casual vs. Registered | 13.68 minutes      |
+
+| Categories | Difference in Ride Times|
+| --- | --- |
+| Workday/Non-Workday | 3.18 minutes|
+| Workday Casual vs. Registered | 12.62 minutes |
+| Non-Workday Casual vs. Registered | 15.47 minutes |
+| Holiday/Non-Holiday | 1.1 minutes |
+| Holiday Casual vs. Registered | 14.15 minutes |
+| Sunny Casual vs. Registered | 14.21 minutes |
+| Cloudy/Misty Casual vs. Registered | 14.02 minutes |
+| Rainy/Stormy/Snowy Casual vs. Registered | 8.74 minutes |
+| Spring Casual vs. Registered | 14.92 minutes |
+| Summer Casual vs. Registered | 14.47 minutes |
+| Fall Casual vs. Registered | 13.0 minutes |
+| Winter Casual vs. Registered | 13.68 minutes |
 <br>
 <br>
 These tests also proved that there were correlations between wind speed, humidity, temperatures, and miles between the start and end stations. However, the correlation values for humidity (0.006), temperature (0.10), and wind speed (-0.02) were very low (close to 0), meaning that the correlation was not very large. The correlation was fairly large for ride time and miles between stations at 0.40. When the member type was factored in, the correlation between ride time and miles for registered riders was even larger (0.65). The correlation was relatively low when factoring in casual riders (0.14). The statistical inference notebook can be found in the file named [Bikeshare_Statistical_Inference.ipynb](https://github.com/mcassi17/Bikeshare_Milestone1_Report/blob/master/Bikeshare_Statistical_Inference.ipynb).
